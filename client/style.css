@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.mapa {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.legenda {
+    margin-bottom: 20px;
+}
+
+.vaga-disponivel {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.vaga-ocupada {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.areas-estacionamento {
+    display: block;
+    flex-wrap: wrap;
+
+}
+
+.area {
+    margin-bottom: 20px;
+}
+
+.area h2 {
+    margin-bottom: 10px;
+}
+
+.vagas {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.vaga {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.info-adicionais {
+    margin-top: 40px;
+}
+
+.info-adicionais h2 {
+    margin-bottom: 10px;
+}

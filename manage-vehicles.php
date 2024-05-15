@@ -8,19 +8,35 @@
 
 	if(isset($_POST['submit-vehicle'])) {
 		$parkingnumber=mt_rand(10000, 99999);
+		// Receber o valor selecionado do menu suspenso
 		$catename=$_POST['catename'];
+		// Receber o valor selecionado do menu suspenso
+		$zonaestacio=$_POST['zonaestacio'];
 		$vehcomp=$_POST['vehcomp'];
 		$vehreno=$_POST['vehreno'];
 		$ownername=$_POST['ownername'];
 		$ownercontno=$_POST['ownercontno'];
 		$enteringtime=$_POST['enteringtime'];
 			
-		$query=mysqli_query($con, "INSERT into vehicle_info(ParkingNumber,VehicleCategory,VehicleCompanyname,RegistrationNumber,OwnerName,OwnerContactNumber) value('$parkingnumber','$catename','$vehcomp','$vehreno','$ownername','$ownercontno')");
+
+
+// Consultar o ID correspondente ao valor selecionado
+$query = "SELECT idAreaEst FROM tbareasdeestagionamento WHERE nome = '$zonaestacio'";
+
+$result = mysqli_query($con, $query);
+if (!$result) {
+    die("Erro na consulta: " . mysqli_error($con));
+}
+$row = mysqli_fetch_assoc($result);
+$id_categoria = $row['idAreaEst'];
+
+		$query=mysqli_query($con, "INSERT into vehicle_info(ParkingNumber,VehicleCategory,VehicleCompanyname,RegistrationNumber,OwnerName,OwnerContactNumber,FKZONAPARQ) value('$parkingnumber','$catename','$vehcomp','$vehreno','$ownername','$ownercontno','$id_categoria')");
 		if ($query) {
 			echo "<script>alert('Vehicle Entry Detail has been added');</script>";
 			echo "<script>window.location.href ='dashboard.php'</script>";
 		} else {
-			echo "<script>alert('Something Went Wrong');</script>";       
+			echo "<script>alert('Something Went Wrong');</script>";    
+			echo "<script>alert('$id_categoria ')</script>" ;  
 		}
 	}
   ?>
@@ -79,7 +95,7 @@
 
 
 								<div class="form-group">
-									<label>carro de quem</label>
+									<label>Fabricante</label>
 									<input type="text" class="form-control" id="vehcomp" name="vehcomp" required>
 								</div>
 								
@@ -99,18 +115,30 @@
 									
 
 								<div class="form-group">
-									<label>Nome completo</label>
+									<label>Nome do Proprietário</label>
 									<input type="text" class="form-control" id="ownername" name="ownername" required>
 								</div>
-
 
 								<div class="form-group">
 									<label>Contacto</label>
 									<input type="text" class="form-control" maxlength="10" pattern="[0-9]+" id="ownercontno" name="ownercontno" required>
 								</div>
 
+								<div class="form-group">
+										<label>Zona de estacionamento</label>
+										<select class="form-control" name="zonaestacio" id="zonaestacio">
+										<option value="0">Selecionar zona</option>
+										<?php $query=mysqli_query($con,"select nome from zonas");
+											while($row=mysqli_fetch_array($query))
+											{
+											?>    
+                                        <option value="<?php echo $row['nome'];?>"><?php echo $row['nome'];?></option>
+                  						<?php } ?> 
+										</select>
+									</div>
 
-									<button type="submit" class="btn btn-success" name="submit-vehicle">Enviar</button>
+
+									<button type="submit" onclick="registrarVeiculo()" class="btn btn-success" name="">Enviar</button>
 									<button type="reset" class="btn btn-default">Cancelar</button>
 								</div> <!--  col-md-12 ends -->
 							</form>
@@ -142,6 +170,7 @@
 		});
 };
 	</script>
+	<script src="js/scriptcustumizado.js"></script>
 		
 </body>
 </html>

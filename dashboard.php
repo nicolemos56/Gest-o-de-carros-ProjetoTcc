@@ -55,7 +55,7 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 					<div class="panel panel-teal panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-car color-blue"></em>
 							<div class="large"><?php include 'counters/parking-count.php'?></div>
-							<div class="text-muted">Total de carro parqueado</div>
+							<div class="text-muted">Total de veículos parqueados</div>
 						</div>
 					</div>
 				</div>
@@ -63,7 +63,7 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 					<div class="panel panel-blue panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-toggle-on color-orange"></em>
 							<div class="large"><?php include 'counters/invehicles-count.php'?></div>
-							<div class="text-muted">Carro em</div>
+							<div class="text-muted">Veículos dentro</div>
 						</div>
 					</div>
 				</div>
@@ -71,15 +71,15 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 					<div class="panel panel-orange panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-toggle-off color-teal"></em>
 							<div class="large"><?php include 'counters/outvehicles-count.php'?></div>
-							<div class="text-muted">Carro fora</div>
+							<div class="text-muted">Veículos fora</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-red panel-widget ">
 						<div class="row no-padding"><em class="fa fa-xl fa-clock-o color-red"></em>
-							<div class="large"><?php include 'counters/current-parkingCount.php'?></div>
-							<div class="text-muted">Parqueado feito com sucesso, 24 hrs</div>
+							<div class="large" id="totalVagas"><?php //include 'counters/current-parkingCount.php'?>  </div>
+							<div class="text-muted" >Total De Vagas</div>
 						</div>
 					</div>
 				</div>
@@ -91,7 +91,7 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Highlights - Dentro | Fora 
+						Destaques - Dentro | Fora 
 						
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 						<div class="panel-body">
@@ -107,7 +107,7 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Highlights - Categoria de carro
+						Destaques - Categoria de carro
 						
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 						<div class="panel-body">
@@ -130,14 +130,14 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 		 $ret=mysqli_query($con,"SELECT count(ID) id2 from vehicle_info where Status='Out'");
 		  $row6=mysqli_fetch_array($ret);
 
-		  $ret=mysqli_query($con,"SELECT count(ID) as id1 from vehicle_info where VehicleCategory='Two Wheeler'");
+		  $ret=mysqli_query($con,"SELECT count(ID) as id1 from vehicle_info where VehicleCategory='8'");
 		$row=mysqli_fetch_array($ret);  
              
-		$ret=mysqli_query($con,"SELECT count(ID) as id2 from vehicle_info where VehicleCategory='Four Wheeler'");
+		$ret=mysqli_query($con,"SELECT count(ID) as id2 from vehicle_info where VehicleCategory='7'");
 		$row2=mysqli_fetch_array($ret); 
 
-		$ret=mysqli_query($con,"SELECT count(ID) as id4 from vehicle_info where VehicleCategory='Three Wheeler'");
-		$row4=mysqli_fetch_array($ret);
+		/*$ret=mysqli_query($con,"SELECT count(ID) as id4 from vehicle_info where VehicleCategory='Three Wheeler'");
+		$row4=mysqli_fetch_array($ret);*/
 		
 		?>
 
@@ -167,7 +167,7 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 	var myChart = new Chart(ctx, {
 	type: 'pie',
 	data: {
-	labels: ["Vehicle In-Time","Vehicle Out-Time"],
+	labels: ["Veículos-Dentro","Veículos-Fora"],
 	datasets: [{
 	backgroundColor: ["#30a5ff","#33cccc"],
 	data: [<?php echo $row5['id1']; ?>,<?php echo $row6['id2']; ?>]
@@ -179,12 +179,12 @@ if (strlen($_SESSION['vpmsaid']==0)) {
 	var myChart = new Chart(ctx, {
 	type: 'pie',
 	data: {
-	labels: ["Two Wheeler","Four Wheeler", "Three Wheeler"],
+	labels: ["Duas Rodas","Quatro Rodas"],
 	datasets: [{
 	backgroundColor: ["#f55d42","#f5c542", "#6b6b6b"],
 	data: [<?php echo $row['id1']; ?>,
 		   <?php echo $row2['id2']; ?>,
-		   <?php echo $row4['id4']; ?>
+		   <?php /* echo $row4['id4'];*/ ?>
 		
 		]
 	}]

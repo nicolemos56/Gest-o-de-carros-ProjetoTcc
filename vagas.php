@@ -12,7 +12,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ISPCAN</title>
+	<title>VPS</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/datatable.css" rel="stylesheet">
@@ -27,7 +27,7 @@
         <?php include 'includes/navigation.php' ?>
 	
 		<?php
-		$page="in-vehicle";
+		$page="vehicle-category";
 		include 'includes/sidebar.php'
 		?>
 		
@@ -37,7 +37,7 @@
 				<li><a href="dashboard.php">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">Gestão de entrada de veículos</li>
+				<li class="active">Gerir vagas</li>
 			</ol>
 		</div><!--/.row-->
 		
@@ -50,42 +50,25 @@
 		<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						<div class="panel-heading">Entrada de veículos</div>
+						<div class="panel-heading">Vagas de estacionamento <a href="add-vagas.php" type="button" class="btn btn-sm btn-primary">Adicionar nova</a></div>
 						<div class="panel-body">
                         <table id="example" class="table table-striped table-hover table-bordered" style="width:100%">
                         
         <thead>
             <tr>
                 <th>#</th>
-                <th>veículos No.</th>
-                <th>Empresa/outros</th>
-                <th>Categoria</th>
-				<th>Zona de estacionamento</th>
-                <th>Parque núm</th>
-                <th>Proprietário</th>
-				
-                <th></th>
+                <th>Numero de Vagas</th>
+                <th>Zona de esatacionamento</th>
+				<th>Vagas disponíveis</th>
+				<th>Vgas ocupadas</th>
+                <th>Operação</th>
 
             </tr>
         </thead>
         <tbody>
         <?php
-        $ret=mysqli_query($con,"SELECT 
-		vi.RegistrationNumber,
-		 vi.VehicleCompanyname,
-		 vi.VehicleCategory,
-		 vi.ParkingNumber,
-		 vi.OwnerName,
-		 vi.ID,
-		  te.idAreaEst,
-		  te.NomeZonaEstacionamento
-	 FROM 
-		 vehicle_info vi
-	 INNER JOIN 
-		 tbareasdeestagionamento te
-	 ON
-		 vi.FKZONAPARQ=te.idAreaEst
-		 WHERE status='';");
+        $ret=mysqli_query($con,"SELECT * FROM `tbnumerovagas` INNER JOIN tbareasdeestagionamento
+		ON tbnumerovagas.FkAreasEstacio=tbareasdeestagionamento.idAreaEst;");
         $cnt=1;
         while ($row=mysqli_fetch_array($ret)) {
 
@@ -95,16 +78,14 @@
 
             <td><?php echo $cnt;?></td>
                  
-            <td><?php  echo $row['RegistrationNumber'];?></td>
-            <td><?php  echo $row['VehicleCompanyname'];?></td>
-            <td><?php  echo $row['VehicleCategory'];?></td>
-			<td><?php  echo $row['NomeZonaEstacionamento'];?></td>
+            <td><?php  echo $row['NumeroVagas'];?></td>
 
-            <td><?php  echo 'CA-'.$row['ParkingNumber'];?></td>
-
-            <td><?php  echo $row['OwnerName'];?></td>
+            <td><?php  echo $row['NomeZonaEstacionamento'];?></td>
+			<td><?php  echo $row['vagadisponivel'];?></td>
+			<td><?php  echo $row['vagaocupada'];?></td>
             
-            <td><a href="update-incomingdetail.php?updateid=<?php echo $row['ID'];?>"><button type="button" class="btn btn-sm btn-danger">Operação</button></a>
+            <td><a href="update-category.php?editid=<?php echo $row['idNumVagas'];?>"> <button class="btn btn-success btn-sm"><i class="fa fa-edit"></i></button> </a>
+            <a href="remove-category.php?editid=<?php echo $row['idNumVagas'];?>"> <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button> </a>
             </td>
 
             </tr>
